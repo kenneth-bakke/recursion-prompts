@@ -119,20 +119,17 @@ var sumBelow = function(n) {
 var range = function(x, y) {
   var arr = [];
 
-  var createRange = function(start, end) {
-    if (start + 1 === end - 1) {
-      arr.unshift(start + 1);
-      return arr;
-    } else if (start + 1 === end) {
-      arr.unshift(start);
-      arr.push(end);
-    }
-    arr.push(createRange(x + 1, y - 1));
-    return arr.flat();
-  };
-  createRange(x, y);
-  arr.shift(x);
-  arr.pop(y);
+  if (x + 1 === y - 1) {
+    arr.unshift(x + 1);
+    return arr;
+  } else if (x + 1 === y) {
+    arr.unshift(x);
+    arr.push(y);
+    return arr;
+  }
+
+  arr.push(range(x + 1, y - 1));
+  arr.flat();
   return arr;
 };
 
