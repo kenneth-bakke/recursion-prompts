@@ -7,31 +7,133 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+  // if number is negative, return null
+  if (n < 0) {
+    return null;
+  }
+
+  // base case
+  if (n === 0) {
+    return 1;
+  }
+
+  // recursive case
+  return n * factorial(n - 1);
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+  if (array.length === 0) {
+    return 0;
+  }
+
+  if (array.length === 1) {
+    return array[0];
+  }
+
+  var numbers = array.slice(0, length -1 );
+
+  return array[numbers.length] + sum(numbers);
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+
+  // flatten the array for consistency
+  var flattenArray = function(input) {
+    var flattened = [];
+    if (!Array.isArray(input)) {
+      return input;
+    }
+
+    input.forEach(function(item) {
+      flattened = flattened.concat(flattenArray(item));
+    });
+    return flattened;
+  }
+
+  var flatArray = flattenArray(array);
+
+  if (flatArray.length === 0) {
+    return 0;
+  }
+
+  if (flatArray.length === 1) {
+    return array[0];
+  }
+
+  var numbers = flatArray.slice(0, length -1 );
+
+  return flatArray[numbers.length] + arraySum(numbers);
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  if (n === NaN) {
+    console.log('Non-integer passed into isEven()!')
+    return false;
+  }
+  if(n !== parseInt(n)) {
+    console.log('Non-integer passed to isEven()');
+    return false;
+  }
+  // base cases 2 / 2 == 0
+  if (n === 0) {
+    return true;
+  }
+  // or 3 / 2 === 0.5
+  if (n === 1) {
+    return false;
+  }
+
+  // recursive function
+  if (n < 0) {
+    return isEven(-n);
+  } else {
+    return isEven(n - 2);
+  }
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+  if (n === 1 || n === 0) {
+    return 0;
+  }
+
+  if (typeof(n) === NaN) {
+    return error("n is not a number!");
+  }
+
+  if (n > 0) {
+    return n - 1 + sumBelow(n - 1);
+  }
+  return n + 1 + sumBelow(n + 1);
 };
 
 // 6. Get the integers within a range (x, y).
-// range(2,9); // [3,4,5,6,7,8]
+// range(2,9)  // [3, 4, 5, 6, 7, 8]
 var range = function(x, y) {
+  var arr = [];
+
+  var createRange = function(start, end) {
+    if (start + 1 === end - 1) {
+      arr.unshift(start + 1);
+      return arr;
+    } else if (start + 1 === end) {
+      arr.unshift(start);
+      arr.push(end);
+    }
+    arr.push(createRange(x + 1, y - 1));
+    return arr.flat();
+  };
+  createRange(x, y);
+  arr.shift(x);
+  arr.pop(y);
+  return arr;
 };
 
 // 7. Compute the exponent of a number.
@@ -40,6 +142,26 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  // base case
+  if (exp === 0 && base^exp === 1) {
+    return 1;
+  }
+
+  // if exp is positive and even
+  if (exp > 0 && exp % 2 === 0) {
+    var y = exponent(base, (exp / 2));
+    return y * y;
+  }
+
+  // if exp is positive and odd
+  if (exp > 0 && exp % 2 !== 0) {
+    return exponent(base, (exp - 1)) * base
+  }
+
+  // if exp is negative
+  if (exp < 0) {
+    return  1 / exponent(base, (-1 * exp));
+  }
 };
 
 // 8. Determine if a number is a power of two.
